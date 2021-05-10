@@ -89,10 +89,6 @@ local Ntargets = 0
 local selectedTarget = 0
 local target
 local Ctarget
---local targetSteering = machine.get_refs_control("TargetSteering")
---local targetSteeringY = machine.get_refs_control("TargetSteeringY")
---local targetRoll = machine.get_refs_control("TargetRoll")
---local targetRollR = machine.get_refs_control("TargetRollR")
 local targetMachine
 local targetStartingBlock
 local targetBlock
@@ -132,7 +128,6 @@ local delta
 
 local launch
 local debounce = 0
---local line = lines.new_line_renderer()
 
 
 local JOY = "Joy0"
@@ -314,13 +309,10 @@ local function update()
   starting_block.rotationalSpeed = vector.multiply(vector.subtract(starting_block.rotation(), oldRot), 1/time.delta_time())
   oldRot = starting_block.rotation()
   hit = physics.raycast(vector.add(vector.multiply(starting_block.forward(), -10), starting_block.position()), vector.multiply(starting_block.forward(), -11))
-  --line.set_points(machine_info.get_block_info(blockindex).position(),vector.add(machine_info.get_block_info(blockindex).position(), vector.new(0, 3, 0)))
   axisX = input.get_axis(JoyAxis0) * 10;
   axisY = input.get_axis(JoyAxis1) * 10;
   axisR = input.get_axis(JoyAxis2) * 10;
   axisS = 0.5 -  input.get_axis(JoyAxis3) * 5;
-  --axisDx = input.get_axis("Joy0Axis4") * 10;
-  --axisDy = input.get_axis("Joy0Axis5") * 10;
   if debounce < time.time() then
     debounce = time.time() + 0.15
     if input.get_axis(JoyAxis5) * 10 > 0.5 then
@@ -352,10 +344,7 @@ local function update()
     end
   end
   
-  --targetSteering.set_steering(target.rotation().y - targetDirection.y)
-  --targetSteeringY.set_steering(-target.rotation().x + targetDirection.x)
-  --targetRoll.set_slider("speed",1 + (target.rotation().z - targetDirection.z) * 0.1)
-  --targetRollR.set_slider("speed",1 + (-target.rotation().z + targetDirection.z) * 0.1)
+  
   if not BombMode then
     if mode then
       frontEngine.set_slider("speed", 1.5 * axisS + 0.5 * axisY)
